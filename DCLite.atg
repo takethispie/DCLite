@@ -1,0 +1,68 @@
+COMPILER DCLite
+
+	public CodeGenerator gen;
+  public SymbolTable sytab;
+  
+/*--------------------------------------------------------------------------*/
+CHARACTERS
+  letter = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz".
+  digit = "0123456789".
+  cr  = '\r'.
+  lf  = '\n'.
+  tab = '\t'.
+
+TOKENS
+  ident  = letter {letter | digit}.
+  number = digit {digit}.
+
+COMMENTS FROM "/*" TO "*/" NESTED
+COMMENTS FROM "//" TO lf
+
+IGNORE cr + lf + tab
+
+
+PRODUCTIONS
+
+
+/*------------------------------------------------------------------------*/
+Ident<out string name>
+= "$" ident                  (. name = t.val; .).
+/*------------------------------------------------------------------------*/
+
+
+/*------------------------------------------------------------------------*/
+LIdent<out string name>
+= "#" ident                   (. name = t.val; .)
+.
+/*------------------------------------------------------------------------*/
+
+
+/*------------------------------------------------------------------------*/
+DCasm                    (. string name; .)
+= "program"
+  {
+    Arithm | Branch |
+    "var" LIdent<out name>      (. sytab.Add(new Variable(name, 0)); .)
+  }
+  EOF.
+/*-----------------------------------------------------------------------*/
+
+
+/*------------------------------------------------------------------------*/
+Arithm                          (. string name1; string name2; string name3; string op; Node child1 = null, child2 = null, child3 = null; .)
+= "add" | "sub" | "mul" | "div" (. op = t.val; .)
+( 
+  Ident<out name1>              (. child1 = new Variable(name1); .)
+  | 
+  number                        (. child1 = new Const(int.Parse(t.val)); .)
+)   
+( 
+  Ident<out name2>              (. child2 = new Variable(name2); .)
+  | 
+  number                        (. child2 = new Const(int.Parse(t.val)); .)
+) 
+Ident<out name3>                (. child3 = new Variable(name3); gen.Emit(new ArithmNodeFactory().Create(op, child1, child2, child3)); .)
+.
+/*------------------------------------------------------------------------*/
+
+END DCLite.
