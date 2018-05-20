@@ -25,7 +25,6 @@ namespace DCLite
 			    {
 			        sc = new Scanner(cmdSplit[1]);
 			        par = new Parser(sc);
-					par.sytab = new SymbolTable();
 					//par.CurrentISA = new DCASM8();
 
 					par.gen = new CodeGenerator();

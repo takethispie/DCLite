@@ -203,8 +203,8 @@ public class UTF8Buffer: Buffer {
 public class Scanner {
 	const char EOL = '\n';
 	const int eofSym = 0; /* pdt */
-	const int maxT = 13;
-	const int noSym = 13;
+	const int maxT = 11;
+	const int noSym = 11;
 
 
 	public Buffer buffer; // scanner buffer
@@ -229,8 +229,8 @@ public class Scanner {
 		for (int i = 65; i <= 90; ++i) start[i] = 1;
 		for (int i = 97; i <= 122; ++i) start[i] = 1;
 		for (int i = 48; i <= 57; ++i) start[i] = 2;
-		start[36] = 3; 
-		start[35] = 4; 
+		start[123] = 3; 
+		start[125] = 4; 
 		start[Buffer.EOF] = -1;
 
 	}
@@ -343,14 +343,12 @@ public class Scanner {
 
 	void CheckLiteral() {
 		switch (t.val) {
-			case "program": t.kind = 5; break;
-			case "var": t.kind = 6; break;
+			case "program": t.kind = 3; break;
+			case "store": t.kind = 5; break;
 			case "add": t.kind = 7; break;
 			case "sub": t.kind = 8; break;
 			case "mul": t.kind = 9; break;
 			case "div": t.kind = 10; break;
-			case "goto": t.kind = 11; break;
-			case "label": t.kind = 12; break;
 			default: break;
 		}
 	}
@@ -386,9 +384,9 @@ public class Scanner {
 				if (ch >= '0' && ch <= '9') {AddCh(); goto case 2;}
 				else {t.kind = 2; break;}
 			case 3:
-				{t.kind = 3; break;}
-			case 4:
 				{t.kind = 4; break;}
+			case 4:
+				{t.kind = 6; break;}
 
 		}
 		t.val = new String(tval, 0, tlen);

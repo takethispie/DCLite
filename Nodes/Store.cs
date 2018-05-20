@@ -5,7 +5,11 @@ using System.IO;
 namespace DCLite
 {
     public class Store : Node{
-        public Store(Node child1, Node child2) : base(child1, child2)
+
+        public int constant;
+        public string name; 
+
+        public Store(string child1,  int child2) : base()
         {
         }
 

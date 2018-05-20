@@ -11,16 +11,18 @@ namespace DCLite
 
         public void Visit(Add n)
         {
-            if(n.Childrens.Count > 1) {
+            if(n.Childrens.Count > 2) {
                 n.Childrens[0].Accept(this);
-                Console.WriteLine("+");
+                Console.Write(" + ");
                 n.Childrens[1].Accept(this);
+                Console.Write(" -> ");
+                n.Childrens[2].Accept(this);
             }
         }
 
         public void Visit(Const n)
         {
-            Console.WriteLine((n).GetValue());
+            Console.Write(n.GetValue());
         }
 
         public void Visit(Store n)
@@ -33,10 +35,8 @@ namespace DCLite
 
         public void Visit(Root n)
         {
-        }
-
-        public void Visit(Load n)
-        {
+            n.Childrens.ForEach(x => x.Accept(this));
+            Console.WriteLine("");
         }
 
         public void Visit(Sub n)
@@ -51,16 +51,8 @@ namespace DCLite
         {
         }
 
-        public void VisitRead(Node n)
-        {
-        }
-
-        public void VisitWrite(Node n)
-        {
-        }
-
         public void Visit(Variable n) {
-            
+            Console.Write(n.Name);
         }
     }
 }

@@ -9,7 +9,7 @@ public class Parser {
 	public const int _EOF = 0;
 	public const int _ident = 1;
 	public const int _number = 2;
-	public const int maxT = 13;
+	public const int maxT = 11;
 
 	const bool _T = true;
 	const bool _x = false;
@@ -23,7 +23,6 @@ public class Parser {
 	int errDist = minErrDist;
 
 public CodeGenerator gen;
-  public SymbolTable sytab;
   
 /*--------------------------------------------------------------------------*/
 
@@ -86,32 +85,26 @@ public CodeGenerator gen;
 
 	
 	void Ident(out string name) {
+		Expect(1);
+		name = t.val; 
+	}
+
+	void DCLite() {
+		string name; int value; 
 		Expect(3);
-		Expect(1);
-		name = t.val; 
-	}
-
-	void LIdent(out string name) {
 		Expect(4);
-		Expect(1);
-		name = t.val; 
-	}
-
-	void DCasm() {
-		string name; 
-		Expect(5);
 		while (StartOf(1)) {
 			if (StartOf(2)) {
 				Arithm();
-			} else if (la.kind == 11 || la.kind == 12) {
-				Branch();
 			} else {
 				Get();
-				LIdent(out name);
-				sytab.Add(new Variable(name, 0)); 
+				Expect(2);
+				value = int.Parse(t.val);
+				Ident(out name);
+				gen.Emit( new Store(name, value) ); 
 			}
 		}
-		Expect(0);
+		Expect(6);
 	}
 
 	void Arithm() {
@@ -124,37 +117,24 @@ public CodeGenerator gen;
 			Get();
 		} else if (la.kind == 10) {
 			Get();
-			op = t.val; 
-			if (la.kind == 3) {
-				Ident(out name1);
-				child1 = new Variable(name1); 
-			} else if (la.kind == 2) {
-				Get();
-				child1 = new Const(int.Parse(t.val)); 
-			} else SynErr(14);
-			if (la.kind == 3) {
-				Ident(out name2);
-				child2 = new Variable(name2); 
-			} else if (la.kind == 2) {
-				Get();
-				child2 = new Const(int.Parse(t.val)); 
-			} else SynErr(15);
-			Ident(out name3);
-			child3 = new Variable(name3); gen.Emit(new ArithmNodeFactory().Create(op, child1, child2, child3)); 
-		} else SynErr(16);
-	}
-
-	void Branch() {
-		string name; 
-		if (la.kind == 11) {
+		} else SynErr(12);
+		op = t.val; 
+		if (la.kind == 1) {
+			Ident(out name1);
+			child1 = new Variable(name1); 
+		} else if (la.kind == 2) {
 			Get();
-			LIdent(out name);
-			
-		} else if (la.kind == 12) {
+			child1 = new Const(int.Parse(t.val)); 
+		} else SynErr(13);
+		if (la.kind == 1) {
+			Ident(out name2);
+			child2 = new Variable(name2); 
+		} else if (la.kind == 2) {
 			Get();
-			LIdent(out name);
-			
-		} else SynErr(17);
+			child2 = new Const(int.Parse(t.val)); 
+		} else SynErr(14);
+		Ident(out name3);
+		child3 = new Variable(name3); gen.Emit(new ArithmNodeFactory().Create(op, child1, child2, child3)); 
 	}
 
 
@@ -163,15 +143,15 @@ public CodeGenerator gen;
 		la = new Token();
 		la.val = "";		
 		Get();
-		DCasm();
+		DCLite();
 		Expect(0);
 
 	}
 	
 	static readonly bool[,] set = {
-		{_T,_x,_x,_x, _x,_x,_x,_x, _x,_x,_x,_x, _x,_x,_x},
-		{_x,_x,_x,_x, _x,_x,_T,_T, _T,_T,_T,_T, _T,_x,_x},
-		{_x,_x,_x,_x, _x,_x,_x,_T, _T,_T,_T,_x, _x,_x,_x}
+		{_T,_x,_x,_x, _x,_x,_x,_x, _x,_x,_x,_x, _x},
+		{_x,_x,_x,_x, _x,_T,_x,_T, _T,_T,_T,_x, _x},
+		{_x,_x,_x,_x, _x,_x,_x,_T, _T,_T,_T,_x, _x}
 
 	};
 } // end Parser
@@ -188,21 +168,18 @@ public class Errors {
 			case 0: s = "EOF expected"; break;
 			case 1: s = "ident expected"; break;
 			case 2: s = "number expected"; break;
-			case 3: s = "\"$\" expected"; break;
-			case 4: s = "\"#\" expected"; break;
-			case 5: s = "\"program\" expected"; break;
-			case 6: s = "\"var\" expected"; break;
+			case 3: s = "\"program\" expected"; break;
+			case 4: s = "\"{\" expected"; break;
+			case 5: s = "\"store\" expected"; break;
+			case 6: s = "\"}\" expected"; break;
 			case 7: s = "\"add\" expected"; break;
 			case 8: s = "\"sub\" expected"; break;
 			case 9: s = "\"mul\" expected"; break;
 			case 10: s = "\"div\" expected"; break;
-			case 11: s = "\"goto\" expected"; break;
-			case 12: s = "\"label\" expected"; break;
-			case 13: s = "??? expected"; break;
+			case 11: s = "??? expected"; break;
+			case 12: s = "invalid Arithm"; break;
+			case 13: s = "invalid Arithm"; break;
 			case 14: s = "invalid Arithm"; break;
-			case 15: s = "invalid Arithm"; break;
-			case 16: s = "invalid Arithm"; break;
-			case 17: s = "invalid Branch"; break;
 
 			default: s = "error " + n; break;
 		}

@@ -23,24 +23,22 @@ namespace DCLite
 		Node root;
 		public Node Current;
 
-		public Dictionary<string, Variable> variables;
-
 		public CodeGenerator()
 		{
 			pc = 1; progStart = -1;
 			root = new Root();
-			variables = new Dictionary<string, Variable>();
 		}
 
 		//----- code generation methods -----
 		public void Emit(Node node)
 		{
-			
+			root.Childrens.Add(node);
 		}
 
         public void Decode()
 		{
-			
+			PrintVisitor visitor = new PrintVisitor();
+			root.Accept(visitor);
 		}
 
 		public void Compile()

@@ -1,7 +1,6 @@
 COMPILER DCLite
 
 	public CodeGenerator gen;
-  public SymbolTable sytab;
   
 /*--------------------------------------------------------------------------*/
 CHARACTERS
@@ -26,31 +25,25 @@ PRODUCTIONS
 
 /*------------------------------------------------------------------------*/
 Ident<out string name>
-= "$" ident                  (. name = t.val; .).
+= ident                  (. name = t.val; .).
 /*------------------------------------------------------------------------*/
 
-
 /*------------------------------------------------------------------------*/
-LIdent<out string name>
-= "#" ident                   (. name = t.val; .)
-.
-/*------------------------------------------------------------------------*/
-
-
-/*------------------------------------------------------------------------*/
-DCasm                    (. string name; .)
-= "program"
+DCLite                    (. string name; int value; .)
+= "program" "{"
   {
-    Arithm | Branch |
-    "var" LIdent<out name>      (. sytab.Add(new Variable(name, 0)); .)
+    Arithm 
+    |
+    "store" number      (. value = int.Parse(t.val);.)
+    Ident<out name>     (. gen.Emit( new Store(name, value) ); .)
   }
-  EOF.
+  "}".
 /*-----------------------------------------------------------------------*/
 
 
 /*------------------------------------------------------------------------*/
 Arithm                          (. string name1; string name2; string name3; string op; Node child1 = null, child2 = null, child3 = null; .)
-= "add" | "sub" | "mul" | "div" (. op = t.val; .)
+= ("add" | "sub" | "mul" | "div") (. op = t.val; .)
 ( 
   Ident<out name1>              (. child1 = new Variable(name1); .)
   | 
