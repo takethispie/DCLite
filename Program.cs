@@ -29,7 +29,7 @@ namespace DCLite
 
 					par.gen = new CodeGenerator();
 					par.Parse();
-					if (par.errors.count == 0)
+					if (par.errors.Count == 0)
 						par.gen.Decode();
 			    }
 			    else
