@@ -1,6 +1,3 @@
 /obj
 /bin
-Coco.exe
-*.old
-*.frame
-.vscode
+/.vscode
