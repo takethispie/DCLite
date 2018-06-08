@@ -7,7 +7,10 @@ namespace rpn_csharp.Tokens
         public string value;
         public List<IToken> childrens { get; set; }
         
-
+        public Constant(string value)
+        {
+            this.value = value;
+        }
         public Constant(int value) {
             this.value = value.ToString();
             this.childrens = new List<IToken>();

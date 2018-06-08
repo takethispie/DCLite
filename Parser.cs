@@ -30,10 +30,21 @@ namespace rpn_csharp
 
             }
 
-            TokenFactory factory = new TokenFactory();
+            List<IMutator> lookUpOperator = new List<IMutator> {
+                  new FusionTwoTokenMutator(new Add()),
+                  new FusionTwoTokenMutator(new Substract()),
+                  new FusionTwoTokenMutator(new Multiply()),
+                  new FusionTwoTokenMutator(new Divide()),
+                  new RemoveOneTokenMutator(new Constant("pop")),
+                  new DuplicateOneTokenMutator(new Constant("dup")),
+                  new SwapTwoTokenMutator(new Constant("swap"))
+            };
+
+            TokenFactory factory = new TokenFactory(lookUpOperator);
             foreach (String item in items) {
                 factory.Create(item);
             }
+
             this.output = factory.AST;
             if (this.output.Count == 1 && this.output[0].GetType() == typeof(Operand)) 
                 visitor = new SingleValueVisitor();

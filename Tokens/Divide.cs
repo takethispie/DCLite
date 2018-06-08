@@ -8,11 +8,15 @@ namespace rpn_csharp.Tokens
         public string value;
         public List<IToken> childrens { get; set; }
 
-        public Divide(IToken left, IToken right) {
+        public Divide() : this ("/") {}
+        public Divide(string value)
+        {
+            this.value = value;
+        }
+        public Divide(IToken left, IToken right) : this("/"){
             this.childrens = new List<IToken>();
             this.childrens.Add(left);
             this.childrens.Add(right);
-            value = "/";
         }
 
         public void Accept(IVisitor visitor) {

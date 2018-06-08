@@ -8,12 +8,16 @@ namespace rpn_csharp.Tokens
         public string value;
         public List<IToken> childrens { get; set; }
 
-        public Substract(IToken left, IToken right)
+        public Substract() : this("-") {}
+        public Substract(string value)
+        {
+            this.value = value;
+        }
+        public Substract(IToken left, IToken right) : this("-")
         {
             this.childrens = new List<IToken>();
             this.childrens.Add(left);
             this.childrens.Add(right);
-            value = "-";
         }
 
         public void Accept(IVisitor visitor)
