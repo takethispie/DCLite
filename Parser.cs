@@ -6,17 +6,20 @@ namespace rpn_csharp
 {
     public class Parser
     {
+        private static readonly Parser instance = new Parser();
+
         public string input;
         public List<IToken> output;
         public IVisitor visitor;
 
-        public Parser(string input, IVisitor visitor) {
-            this.input = input;
-            this.output = new List<IToken>();
-            this.visitor = visitor;
+        private Parser() {}
+
+        public static Parser Instance {
+            get { return instance; }
         }
 
         public void Parse() {
+            output = new List<IToken>();
             List<string> items = new List<string>(this.input.Split(" "));
             int singleValue = 0;
             try {
