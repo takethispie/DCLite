@@ -8,17 +8,11 @@ namespace rpn_csharp.Tokens
         public string value;
         public List<IToken> childrens { get; set; }
 
-        public Add() : this("+"){}
-        public Add(string value)
-        {
-            this.value = value;
-        }
-        public Add(IToken left, IToken right) 
-        : this("+")
-        {
+        public Add(IToken left, IToken right) {
             this.childrens = new List<IToken>();
             this.childrens.Add(left);
             this.childrens.Add(right);
+            value = "+";
         }
 
         public void Accept(IVisitor visitor) {
