@@ -34,7 +34,6 @@ namespace rpn_csharp.Tokens
         {
             int left = int.Parse(childrens[0].GetValue());
             int right = int.Parse(childrens[1].GetValue());
-            if (right == 0) throw new ArgumentException("Divide by 0 error!");
             this.value = (left - right).ToString();
         }
     }
