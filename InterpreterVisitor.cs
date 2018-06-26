@@ -1,8 +1,8 @@
-using rpn_csharp.Tokens;
+using DCLite.Tokens;
 using System;
 using System.Collections.Generic;
 
-namespace rpn_csharp
+namespace DCLite
 {
     public class InterpreterVisitor : IVisitor
     {

@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System;
 
-namespace rpn_csharp.Tokens
+namespace DCLite.Tokens
 {
     public class Substract : IOperator
     {

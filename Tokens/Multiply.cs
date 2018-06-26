@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace rpn_csharp.Tokens
+namespace DCLite.Tokens
 {
     public class Multiply : IOperator
     {

@@ -1,7 +1,7 @@
 
-using rpn_csharp.Tokens;
+using DCLite.Tokens;
 
-namespace rpn_csharp
+namespace DCLite
 {
     public interface IVisitor
     {

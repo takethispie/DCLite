@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace rpn_csharp {
+namespace DCLite {
     class Program {
         static void Main(string[] args) {
             string command = "";

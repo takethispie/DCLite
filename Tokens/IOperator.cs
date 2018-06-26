@@ -1,6 +1,6 @@
-namespace rpn_csharp.Tokens
+namespace DCLite.Tokens
 {
-    public interface IOperator : IToken
+    public interface IOperator: IToken
     {
          void Apply();
     }

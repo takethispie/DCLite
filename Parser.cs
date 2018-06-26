@@ -1,8 +1,9 @@
 using System;
 using System.Collections.Generic;
-using rpn_csharp.Tokens;
+using DCLite.Tokens;
+using DCLite.TreeModifier;
 
-namespace rpn_csharp
+namespace DCLite
 {
     public class Parser
     {
@@ -29,11 +30,12 @@ namespace rpn_csharp
                     token.Accept(visitor);
                     return;
                 }
-            } catch (Exception e) {
+            } catch (Exception ) {
 
             }
-
-            TokenFactory factory = new TokenFactory();
+            TokenFactory tokenFacto = new TokenFactory();
+            TreeModifierFactory treeFacto = new TreeModifierFactory();
+            ASTBuilder factory = new ASTBuilder(tokenFacto, treeFacto);
             foreach (String item in items) {
                 factory.Create(item);
             }
