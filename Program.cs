@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace rpn_csharp {
+namespace DCLite {
     class Program {
         static void Main(string[] args) {
             string command = "";
@@ -14,7 +14,9 @@ namespace rpn_csharp {
 
         static long Evaluate(string expression) {
             InterpreterVisitor visitor = new InterpreterVisitor();
-            Parser parser = new Parser(expression, visitor);
+            Parser parser = Parser.Instance;
+            parser.input = expression;
+            parser.visitor = visitor;
             parser.Parse();
             return visitor.GetValue();
         }

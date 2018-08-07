@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace rpn_csharp.Tokens
+namespace DCLite.Tokens
 {
     public interface IToken
     {

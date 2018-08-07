@@ -1,23 +1,19 @@
 using System.Collections.Generic;
 using System;
 
-namespace rpn_csharp.Tokens
+namespace DCLite.Tokens
 {
     public class Substract : IOperator
     {
         public string value;
         public List<IToken> childrens { get; set; }
 
-        public Substract() : this("-") {}
-        public Substract(string value)
-        {
-            this.value = value;
-        }
-        public Substract(IToken left, IToken right) : this("-")
+        public Substract(IToken left, IToken right)
         {
             this.childrens = new List<IToken>();
             this.childrens.Add(left);
             this.childrens.Add(right);
+            value = "-";
         }
 
         public void Accept(IVisitor visitor)
@@ -38,7 +34,6 @@ namespace rpn_csharp.Tokens
         {
             int left = int.Parse(childrens[0].GetValue());
             int right = int.Parse(childrens[1].GetValue());
-            if (right == 0) throw new ArgumentException("Divide by 0 error!");
             this.value = (left - right).ToString();
         }
     }

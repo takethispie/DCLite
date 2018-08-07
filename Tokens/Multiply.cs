@@ -1,23 +1,18 @@
 using System;
 using System.Collections.Generic;
 
-namespace rpn_csharp.Tokens
+namespace DCLite.Tokens
 {
     public class Multiply : IOperator
     {
         public string value;
         public List<IToken> childrens { get; set; }
 
-        public Multiply() : this("*")
-        {}
-        
-        public Multiply(string value) {
-            this.value = value;
-        }
-        public Multiply(IToken left, IToken right) : this("*"){
+        public Multiply(IToken left, IToken right) {
             this.childrens = new List<IToken>();
             this.childrens.Add(left);
             this.childrens.Add(right);
+            value = "*";
         }
 
         public void Accept(IVisitor visitor) {
@@ -34,7 +29,6 @@ namespace rpn_csharp.Tokens
         public void Apply() {
             int left = int.Parse(childrens[0].GetValue());
             int right = int.Parse(childrens[1].GetValue());
-            if (right == 0) throw new ArgumentException("Divide by 0 error!");
             this.value = (left * right).ToString();
         }
     }

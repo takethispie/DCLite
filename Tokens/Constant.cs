@@ -1,16 +1,13 @@
 using System.Collections.Generic;
 
-namespace rpn_csharp.Tokens
+namespace DCLite.Tokens
 {
     public class Constant : IOperator
     {
         public string value;
         public List<IToken> childrens { get; set; }
         
-        public Constant(string value)
-        {
-            this.value = value;
-        }
+
         public Constant(int value) {
             this.value = value.ToString();
             this.childrens = new List<IToken>();
